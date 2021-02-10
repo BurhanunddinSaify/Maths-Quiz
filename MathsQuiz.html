@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maths Quiz !!</title>
+    <!-- <link rel="stylesheet" href="MathsQuiz.css"> -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans&family=EB+Garamond&family=Gorditas:wght@700&display=swap"
+        rel="stylesheet">
+        <style>
+            #root{
+    margin: 0px;
+    display: block;
+    background-color: rgb(44, 43, 34);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+}
+#App{
+    background-color:#FEE715FF;
+    height: 500px;
+    width: 60%;
+    border-radius: 30px;
+    box-shadow: 2px 2px 1px grey;
+    position: absolute;
+    top: 120px;
+}
+#heading{
+    font-family: 'Gorditas', cursive;
+    font-size: 40px;
+}
+p{
+    font-family: 'EB Garamond', serif;
+    font-size: 20px;
+}
+#header{
+    /* background-color: grey; */
+    text-align: center;
+    height: 200px;
+}
+#ques, .options{
+    font-family: 'Balsamiq Sans', cursive;
+}
+
+#main{
+    /* background-color: yellow; */
+    text-align: center;
+    height: 400px;
+    /* width: 500px; */
+    justify-content: center;
+    
+    
+}
+
+.options {
+    height: 30px;
+    width: 50px;
+}
+#ques{
+    font-size: 20px;
+}
+
+
+#intro{
+    font-size: 20px;
+    /* width: 500px; */
+    padding: 3px;
+    margin: 10px;
+}
+#start-button{
+    cursor: pointer;
+    text-decoration: underline;
+}
+        </style>
+</head>
+
+<body id="root">
+    <div id="App">
+        <header id="header">
+            <h1 id="heading">Maths Quiz!!!</h1>
+            <div id="intro">Click here <b id="start-button">to start!!</b> 
+         The score shall increase on correct answer while decrease on wrong answer. Target is to get highest score in least questions</div>
+            Score: <b id="score">0</b>
+            <br>
+            Question: <b id="q-number"> 0</b>
+        </header>
+
+        <main id="main">
+            <div>
+                <div id="question">
+                    <div id="ques">Question will be presented here!!</div>
+                </div>
+                <br>
+                <div id="answer">
+                    <input type="button" class="options" id="o-1" onclick="SelectAnswer(0)">
+                    <input type="button" class="options" id="o-3" onclick="SelectAnswer(1)">
+                    <input type="button" class="options" id="o-2" onclick="SelectAnswer(2)">
+                    <input type="button" class="options" id="o-4" onclick="SelectAnswer(3)">
+                    <br>
+                    <b id="result"></b>
+                    <br><br>
+                    <button id="next" onclick="Restart()"> Restart</button>
+                    <input value="Reveal Answer" type="button" class="ans-rev" id="c-a" onclick="CheckQuestion()">
+                    <p id="correct-answer"></p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+   
+    <script >
+    const q = document.getElementById('ques')
+const qNum = document.getElementById('q-number')
+const options = document.getElementsByClassName('options')
+const AnsRev = document.getElementById('correct-answer')
+const score = document.getElementById('score')
+const timer = document.getElementById('timer')
+const result = document.getElementById('result')
+
+var correctanswer = 0
+
+MakeQuestions = () => {
+    let random1 = Math.floor(Math.random() * 100)
+    let random2 = Math.floor(Math.random() * 1000)
+    let number1 = Math.floor(Math.random() * random1) + random2
+    let number2 = Math.floor(Math.random() * random1) + random2
+    let number3 = Math.floor(Math.random() * random1) + random2
+    let question = `${number1} + ${number2} + ${number3}`
+    q.innerHTML = question
+    correctanswer = eval(question)
+    console.log(correctanswer)
+    for(let i = 0; i < options.length; i++){
+        options[i].setAttribute('value', correctanswer - Math.floor(Math.random() * 100))
+    }
+    function CorrectAnswer () {
+        let CorrectOption = Math.floor(Math.random() * (4 - 0) + 0);
+        options[CorrectOption].setAttribute('value', correctanswer) } 
+        CorrectAnswer()
+    // result.classList.toggle('correct')
+    // result.classList.toggle('incorrect')
+        AnsRev.innerHTML = ''
+    qNum.innerHTML++
+    return correctanswer
+}
+SelectAnswer = (id) => {
+    if(options[id].value == correctanswer){
+        console.log('Correct')
+        score.innerHTML ++
+        result.innerHTML = 'Correct'
+        MakeQuestions()
+        
+    }else{
+        if(score.innerHTML != 0 ){
+            score.innerHTML --
+        }
+        MakeQuestions()
+        result.innerHTML = "Wrong"
+        // CheckQuestion()
+        AnsRev.innerHTML = ''
+    }
+} 
+
+CheckQuestion = () => {
+    console.log(eval(q.innerHTML))
+    var correctanswer = eval(q.innerHTML)
+    AnsRev.innerHTML = correctanswer
+    setTimeout(() => { 
+        if(score.innerHTML != 0){
+             score.innerHTML -- 
+        } ;
+        AnsRev.innerHTML = ''
+       },800)
+}
+Restart = () => {
+    score.innerHTML = 0
+    qNum.innerHTML = 0
+    q.innerHTML = 'Question will be presented here!!'
+    MakeQuestions()
+    result.innerHTML = ''
+    }
+
+document.getElementById('start-button').addEventListener('click',Restart)
+
+    </script>
+</body>
+
+</html>
